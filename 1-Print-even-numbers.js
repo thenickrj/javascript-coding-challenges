@@ -1,28 +1,92 @@
 const readLineSync = require("readline-sync");
 
-const Name = readLineSync.question("So What's Your Name : ");
+let range = readLineSync.question("So What's should be the range of numbers: ");
 
-console.log("Hey " + Name + ".Hope you're doing great!!");
+let primeNumbers = [];
 
-console.log("So let's test your maths skills");
-const status = readLineSync.question("Are you ready: Y/N: ");
-count = 0;
-if (status == "Y") {
-  for (var i = 0; i <= 5; i++) {
-    var a = Math.floor(Math.random() * 100); // returns a random integer from 0 to 100
-    var b = Math.floor(Math.random() * 100); // returns a random integer from 0 to 100
-    console.log(a + " X " + b + " is how much??");
-    var userAns = readLineSync.question("Enter Your Answer Please: ");
-    if (userAns == a * b) {
-      console.log("Yayy it's right");
-      count++;
-    } else {
-      console.log("Nope wrong answer");
-    }
-    if (i == 5) {
-      console.log("Your score out of 5 is..." + count);
+function isPrime(n) {
+  if (n < 2) return false;
+  if (n === 2 || n === 3) return true;
+  if (n % 2 === 0 || n % 3 === 0) return false;
+
+  for (let i = 5; i * i <= n; i += 6) {
+    if (n % i === 0 || n % (i + 2) === 0) return false;
+  }
+  return true;
+}
+
+for (let i = 1; i <= range; i++) {
+  if (isPrime(i)) {
+    primeNumbers.push(i);
+  }
+}
+
+function sieveOfEratosthenes(n) {
+  let primes = Array(n + 1).fill(true);
+  primes[0] = primes[1] = false; // 0 and 1 are not prime
+
+  for (let i = 2; i * i <= n; i++) {
+    if (primes[i]) {
+      for (let j = i * i; j <= n; j += i) {
+        primes[j] = false; // Mark multiples as non-prime
+      }
     }
   }
-} else {
-  console.log("Ok Byeee then!!");
+
+  return primes.map((isPrime, i) => (isPrime ? i : null)).filter(Boolean);
 }
+// let primeNumbers = sieveOfEratosthenes(range);
+const readLineSync = require("readline-sync");
+
+// Approach 3
+// let range = parseInt(readLineSync.question("Enter the range: "), 10);
+// let primeNumbers = segmentedSieve(range);
+
+function simpleSieve(limit) {
+  let primes = Array(limit + 1).fill(true);
+  primes[0] = primes[1] = false;
+
+  for (let i = 2; i * i <= limit; i++) {
+    if (primes[i]) {
+      for (let j = i * i; j <= limit; j += i) {
+        primes[j] = false;
+      }
+    }
+  }
+  return primes.map((isPrime, i) => (isPrime ? i : null)).filter(Boolean);
+}
+
+function segmentedSieve(n) {
+  let limit = Math.floor(Math.sqrt(n)) + 1;
+  let primes = simpleSieve(limit);
+  let low = limit,
+    high = 2 * limit;
+  let result = [...primes];
+
+  while (low < n) {
+    if (high > n) high = n;
+
+    let isPrime = Array(high - low + 1).fill(true);
+
+    for (let prime of primes) {
+      let start = Math.max(prime * prime, Math.ceil(low / prime) * prime);
+
+      for (let j = start; j < high; j += prime) {
+        isPrime[j - low] = false;
+      }
+    }
+
+    for (let i = 0; i < isPrime.length; i++) {
+      if (isPrime[i]) result.push(low + i);
+    }
+
+    low += limit;
+    high += limit;
+  }
+
+  return result;
+}
+
+console.log(primeNumbers);
+
+console.log(primeNumbers);
