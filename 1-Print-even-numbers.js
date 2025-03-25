@@ -36,7 +36,6 @@ function sieveOfEratosthenes(n) {
   return primes.map((isPrime, i) => (isPrime ? i : null)).filter(Boolean);
 }
 // let primeNumbers = sieveOfEratosthenes(range);
-const readLineSync = require("readline-sync");
 
 // Approach 3
 // let range = parseInt(readLineSync.question("Enter the range: "), 10);
