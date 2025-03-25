@@ -2,13 +2,13 @@
   "name": "javascript-coding-challenges",
   "version": "1.0.0",
   "description": "\"#javascript-coding-challenges\"",
-  "main": "1-Print-even-numbers.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "nodemon": "^3.1.9",
     "readline-sync": "^1.4.10"
   }
 }
